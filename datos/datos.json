@@ -1,0 +1,30 @@
+[
+  {
+    "nombre": "Mouse Inalámbrico",
+    "categoria": "Periféricos",
+    "descripcion": "Texto secundario o de detalle de producto",
+    "precio": 299.00,
+    "stock": 15
+  },
+  {
+    "nombre": "Teclado Mecánico",
+    "categoria": "Periféricos",
+    "descripcion": "Texto secundario o de detalle de producto",
+    "precio": 899.00,
+    "stock": 10
+  },
+  {
+    "nombre": "Mouse Inalámbrico",
+    "categoria": "Periféricos",
+    "descripcion": "Texto secundario o de detalle de producto",
+    "precio": 299.00,
+    "stock": 20
+  },
+  {
+    "nombre": "Mouse Inalámbrico",
+    "categoria": "Periféricos",
+    "descripcion": "Texto secundario o de detalle de producto",
+    "precio": 299.00,
+    "stock": 8
+  }
+]
