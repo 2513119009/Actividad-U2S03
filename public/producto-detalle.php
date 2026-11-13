@@ -1,23 +1,24 @@
 <?php
-$archivo = __DIR__ . '/../datos/datos.json';
-$productos = [];
 
-if (file_exists($archivo)) {
-    $contenido = file_get_contents($archivo);
-    $productos = json_decode($contenido, true) ?? [];
-}
+declare(strict_types=1);
+
+require_once __DIR__ . '/../src/datos/RepositorioProductos.php';
+require_once __DIR__ . '/../src/utilidades/vistas.php';
 
 $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
 $producto = null;
+$errorMensaje = '';
 
-if ($id !== false && $id !== null) {
-    foreach ($productos as $index => $item) {
-        $itemId = $item['id'] ?? ($index + 1);
-        if ((int) $itemId === $id) {
-            $producto = $item;
-            break;
-        }
+try {
+    if ($id === false || $id === null || $id <= 0) {
+        throw new InvalidArgumentException('El identificador del producto proporcionado no es válido.');
     }
+
+    $repositorio = new RepositorioProductos();
+    $producto = $repositorio->buscarPorId($id);
+} catch (OutOfBoundsException $error) {
+    http_response_code(404);
+    $errorMensaje = $e->getMessage();
 }
 ?>
 <!DOCTYPE html>
@@ -25,7 +26,7 @@ if ($id !== false && $id !== null) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Detalle del Producto - Tienda Tec</title>
+    <title><?= $producto ? escapar($producto->obtenerNombre()) : 'Producto no encontrado'; ?> - Tienda Tec</title>
     <link rel="stylesheet" href="assets/css/estilos.css">
 </head>
 <body>
@@ -35,7 +36,6 @@ if ($id !== false && $id !== null) {
         <nav>
             <a href="index.php">Inicio</a>
             <a href="productos.php" aria-current="page">Catálogo</a>
-            <a href="agregar-producto.php">Agregar producto</a>
             <a href="contacto.php">Contacto</a>
         </nav>
     </header>
@@ -44,22 +44,24 @@ if ($id !== false && $id !== null) {
         <p><a href="productos.php" class="boton" style="background-color: #5b6570;">&larr; Volver al catálogo</a></p>
 
         <?php if ($producto): ?>
-            <section>
-                <span class="etiqueta"><?= htmlspecialchars($producto['categoria'] ?? 'General'); ?></span>
-                <h2><?= htmlspecialchars($producto['nombre'] ?? 'Producto'); ?></h2>
-                <p><strong>Precio:</strong> $<?= number_format((float) ($producto['precio'] ?? 0), 2); ?> MXN</p>
-                <p><strong>Stock disponible:</strong> <?= (int) ($producto['stock'] ?? 0); ?> unidades</p>
-                <?php if (!empty($producto['descripcion'])): ?>
-                    <p><strong>Descripción:</strong> <?= htmlspecialchars($producto['descripcion']); ?></p>
-                <?php endif; ?>
+            <section class="detalle-producto">
+        <span class="etiqueta"><?= escapar($producto->obtenerCategoria()); ?></span>
+        <h2><?= escapar($producto->obtenerNombre()); ?></h2>
+        <p><strong>Precio:</strong> <?= escapar($producto->precioFormateado()); ?></p>
+        <p>
+            <strong>Disponibilidad:</strong>
+            <?php if ($producto->estaDisponible()): ?>
+                <?= escapar($producto->obtenerExistencias()); ?> unidades en existencia
+            <?php else: ?>
+                <span class="etiqueta" style="background:#fde8e8;color:#9b1c1c;">Agotado</span>
+            <?php endif; ?>
+        </p>
+        <p><strong>Descripción:</strong> <?= escapar($producto->obtenerDescripcion()); ?></p>
             </section>
         <?php else: ?>
-            <section>
-                <p class="etiqueta" style="background:#fde8e8;color:#9b1c1c;">Producto no encontrado</p>
-                <h2>El producto solicitado no existe</h2>
-                <p>Es posible que el enlace esté incompleto o que el artículo haya sido retirado del catálogo.</p>
-                <a href="productos.php" class="boton">Ir al catálogo completo</a>
-            </section>
+        <div class="alerta-error">
+        <p>Lo sentimos, el producto solicitado no existe o no está disponible.</p>
+        </div>
         <?php endif; ?>
     </main>
 

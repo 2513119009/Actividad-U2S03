@@ -1,10 +1,20 @@
 <?php
-$archivo = __DIR__ . '/../datos/datos.json';
-$productos = [];
 
-if (file_exists($archivo)) {
-    $contenido = file_get_contents($archivo);
-    $productos = json_decode($contenido, true) ?? [];
+declare(strict_types=1);
+
+require_once __DIR__ . '/../src/datos/RepositorioProductos.php';
+require_once __DIR__ . '/../src/utilidades/vistas.php';
+
+$repositorio = new RepositorioProductos(__DIR__ . '/../datos/datos.json');
+$categoriaSeleccionada = trim((string) ($_GET['categoria'] ?? ''));
+$categorias = $repositorio->obtenerCategorias();
+$errorCategoria = '';
+
+try {
+    $productos = $repositorio->obtenerPorCategoria($categoriaSeleccionada);
+} catch (OutOfBoundsException $error) {
+    $productos = [];
+    $errorCategoria = $error->getMessage();
 }
 ?>
 <!DOCTYPE html>
@@ -22,7 +32,6 @@ if (file_exists($archivo)) {
         <nav>
             <a href="index.php">Inicio</a>
             <a href="productos.php" aria-current="page">Catálogo</a>
-            <a href="agregar-producto.php">Agregar producto</a>
             <a href="contacto.php">Contacto</a>
         </nav>
     </header>
@@ -33,26 +42,28 @@ if (file_exists($archivo)) {
             <a href="agregar-producto.php" class="boton">+ Agregar producto</a>
         </div>
 
+        <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 24px;">
+            <a href="productos.php" class="boton" style="<?= $categoriaSeleccionada !== '' ? 'background-color: #5b6570;' : '' ?>">Todas</a>
+            <?php foreach ($categorias as $categoria): ?>
+                <?php $nombreCategoria = $categoria->obtenerNombre(); ?>
+                <a href="productos.php?categoria=<?= urlencode($nombreCategoria); ?>"
+                   class="boton"
+                   style="<?= mb_strtolower($categoriaSeleccionada) !== mb_strtolower($nombreCategoria) ? 'background-color: #5b6570;' : '' ?>">
+                    <?= escapar($nombreCategoria); ?>
+                </a>
+            <?php endforeach; ?>
+        </div>
+
         <?php if (!empty($productos)): ?>
-            <div class="rejilla-productos">
-                <?php foreach ($productos as $indice => $producto): ?>
-                    <?php $idProducto = $producto['id'] ?? ($indice + 1); ?>
-                    <article class="tarjeta">
-                        <span class="etiqueta"><?= htmlspecialchars($producto['categoria'] ?? 'General'); ?></span>
-                        <h3><?= htmlspecialchars($producto['nombre'] ?? 'Producto'); ?></h3>
-                        <p>
-                            <?= htmlspecialchars($producto['descripcion'] ?? 'Stock disponible: ' . (int) ($producto['stock'] ?? 0) . ' unidades'); ?>
-                        </p>
-                        <p><strong>Precio:</strong> $<?= number_format((float) ($producto['precio'] ?? 0), 2); ?> MXN</p>
-                        <p><strong>Disponibles:</strong> <?= (int) ($producto['stock'] ?? 0); ?> unidades</p>
-                        <a href="producto-detalle.php?id=<?= urlencode((string) $idProducto); ?>" class="boton">Ver detalle</a>
-                    </article>
+            <section class="tarjetas-productos">
+                <?php foreach ($productos as $producto): ?>
+                    <?php mostrarTarjetaProducto($producto); ?>
                 <?php endforeach; ?>
-            </div>
+            </section>
         <?php else: ?>
             <section>
-                <p>No hay productos registrados todavía.</p>
-                <a href="agregar-producto.php" class="boton">Agregar el primer producto</a>
+                <p><?= escapar($errorCategoria !== '' ? $errorCategoria : 'No hay productos disponibles en esta categoría.'); ?></p>
+                <a href="productos.php" class="boton">Ver todos los productos</a>
             </section>
         <?php endif; ?>
     </main>

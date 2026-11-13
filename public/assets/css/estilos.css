@@ -221,3 +221,20 @@ footer {
     padding: calc(var(--espaciado-base) * 4) calc(var(--espaciado-base) * 2);
   }
 }
+/* Contenedor de cuadrícula para las tarjetas de la guía */
+section.tarjetas-productos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: calc(var(--espaciado-base) * 2.5);
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+}
+
+section.tarjetas-productos .tarjeta {
+  margin-bottom: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}

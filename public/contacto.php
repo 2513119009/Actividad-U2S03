@@ -28,11 +28,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <header>
         <h1>Tienda Tec</h1>
-        <nav>
+       <nav>
             <a href="index.php">Inicio</a>
             <a href="productos.php">Catálogo</a>
-            <a href="agregar-producto.php">Agregar producto</a>
-            <a href="contacto.php" aria-current="page">Contacto</a>
+            <a href="contacto.php">Contacto</a>
         </nav>
     </header>
 

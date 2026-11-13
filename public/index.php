@@ -1,11 +1,12 @@
 <?php
-$archivo = __DIR__ . '/../datos/datos.json';
-$destacados = [];
 
-if (file_exists($archivo)) {
-    $productos = json_decode(file_get_contents($archivo), true) ?? [];
-    $destacados = array_slice($productos, 0, 3);
-}
+declare(strict_types=1);
+
+require_once __DIR__ . '/../src/datos/RepositorioProductos.php';
+require_once __DIR__ . '/../src/utilidades/vistas.php';
+
+$repositorio = new RepositorioProductos();
+$destacados = array_slice($repositorio->obtenerTodos(), 0, 3);
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -22,7 +23,6 @@ if (file_exists($archivo)) {
         <nav>
             <a href="index.php" aria-current="page">Inicio</a>
             <a href="productos.php">Catálogo</a>
-            <a href="agregar-producto.php">Agregar producto</a>
             <a href="contacto.php">Contacto</a>
         </nav>
     </header>
@@ -31,31 +31,20 @@ if (file_exists($archivo)) {
         <section>
             <h2>Bienvenido a Tienda Tec</h2>
             <p>Encuentra equipo de cómputo, periféricos y accesorios tecnológicos listos para tu espacio de trabajo o estudio.</p>
-            <div style="display: flex; gap: 12px; flex-wrap: wrap;">
-                <a href="productos.php" class="boton">Explorar catálogo</a>
-                <a href="agregar-producto.php" class="boton" style="background-color: #5b6570;">Agregar producto</a>
-            </div>
+            <a href="productos.php" class="boton">Explorar catálogo</a>
         </section>
 
         <h2>Productos Destacados</h2>
 
         <?php if (!empty($destacados)): ?>
-            <div class="rejilla-productos">
-                <?php foreach ($destacados as $index => $producto): ?>
-                    <?php $idProducto = $producto['id'] ?? ($index + 1); ?>
-                    <article class="tarjeta">
-                        <span class="etiqueta"><?= htmlspecialchars($producto['categoria'] ?? 'General'); ?></span>
-                        <h3><?= htmlspecialchars($producto['nombre'] ?? 'Producto'); ?></h3>
-                        <p><strong>Precio:</strong> $<?= number_format((float) ($producto['precio'] ?? 0), 2); ?> MXN</p>
-                        <p><strong>Disponibles:</strong> <?= (int) ($producto['stock'] ?? 0); ?> unidades</p>
-                        <a href="producto-detalle.php?id=<?= urlencode((string) $idProducto); ?>" class="boton">Ver detalle</a>
-                    </article>
+            <section class="tarjetas-productos">
+                <?php foreach ($destacados as $producto): ?>
+                    <?php mostrarTarjetaProducto($producto, 3); ?>
                 <?php endforeach; ?>
-            </div>
+            </section>
         <?php else: ?>
             <section>
                 <p>Aún no hay productos registrados en el catálogo.</p>
-                <a href="agregar-producto.php" class="boton">Registrar el primer producto</a>
             </section>
         <?php endif; ?>
     </main>

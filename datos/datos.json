@@ -1,30 +1,50 @@
 [
   {
-    "nombre": "Mouse Inalámbrico",
+    "id": 1,
+    "nombre": "Mouse Inalámbrico Ergonómico",
     "categoria": "Periféricos",
-    "descripcion": "Texto secundario o de detalle de producto",
     "precio": 299.00,
-    "stock": 15
+    "existencias": 0,
+    "descripcion": "Sensor óptico de alta precisión y batería recargable de larga duración."
   },
   {
-    "nombre": "Teclado Mecánico",
+    "id": 2,
+    "nombre": "Teclado Mecánico RGB",
     "categoria": "Periféricos",
-    "descripcion": "Texto secundario o de detalle de producto",
     "precio": 899.00,
-    "stock": 10
+    "existencias": 10,
+    "descripcion": "Switches táctiles silenciosos con retroiluminación personalizable."
   },
   {
-    "nombre": "Mouse Inalámbrico",
-    "categoria": "Periféricos",
-    "descripcion": "Texto secundario o de detalle de producto",
-    "precio": 299.00,
-    "stock": 20
+    "id": 3,
+    "nombre": "Audífonos Gamer 7.1",
+    "categoria": "Audio",
+    "precio": 650.00,
+    "existencias": 6,
+    "descripcion": "Sonido envolvente y micrófono flexible con cancelación de ruido."
   },
   {
-    "nombre": "Mouse Inalámbrico",
+    "id": 4,
+    "nombre": "Micrófono Condensador USB",
+    "categoria": "Audio",
+    "precio": 1150.00,
+    "existencias": 0,
+    "descripcion": "Grabación de voz clara para clases en línea, streaming y podcasts."
+  },
+  {
+    "id": 5,
+    "nombre": "SSD NVMe 1TB",
+    "categoria": "Almacenamiento",
+    "precio": 1350.00,
+    "existencias": 8,
+    "descripcion": "Unidad de estado sólido de alta velocidad para arranque y carga rápida."
+  },
+  {
+    "id": 6,
+    "nombre": "Webcam Full HD 1080p",
     "categoria": "Periféricos",
-    "descripcion": "Texto secundario o de detalle de producto",
-    "precio": 299.00,
-    "stock": 8
+    "precio": 540.00,
+    "existencias": 4,
+    "descripcion": "Cámara web con enfoque automático y cubierta de privacidad."
   }
 ]

@@ -1,15 +1,37 @@
 <?php
+
+declare(strict_types=1);
+
+require_once __DIR__ . '/../src/utilidades/vistas.php';
+
 $mensaje = '';
 $tipoMensaje = '';
 $archivo = __DIR__ . '/../datos/datos.json';
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $nombre = trim($_POST['nombre'] ?? '');
-    $categoria = trim($_POST['categoria'] ?? '');
-    $precio = filter_var($_POST['precio'] ?? 0, FILTER_VALIDATE_FLOAT);
-    $stock = filter_var($_POST['stock'] ?? 0, FILTER_VALIDATE_INT);
+$nombre = '';
+$categoria = '';
+$precioInput = '';
+$existenciasInput = '';
+$descripcion = '';
 
-    if (!empty($nombre) && !empty($categoria) && $precio !== false && $precio > 0 && $stock !== false && $stock >= 0) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $nombre = trim((string) ($_POST['nombre'] ?? ''));
+    $categoria = trim((string) ($_POST['categoria'] ?? ''));
+    $precioInput = (string) ($_POST['precio'] ?? '');
+    $existenciasInput = (string) ($_POST['existencias'] ?? '');
+    $descripcion = trim((string) ($_POST['descripcion'] ?? ''));
+
+    $precio = filter_var($precioInput, FILTER_VALIDATE_FLOAT);
+    $existencias = filter_var($existenciasInput, FILTER_VALIDATE_INT);
+
+    if (
+        $nombre !== '' &&
+        $categoria !== '' &&
+        $precio !== false &&
+        $precio > 0 &&
+        $existencias !== false &&
+        $existencias >= 0
+    ) {
         $productos = [];
 
         if (file_exists($archivo)) {
@@ -18,21 +40,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         $ids = array_column($productos, 'id');
-        $nuevoId = empty($ids) ? (count($productos) + 1) : (max($ids) + 1);
+        $nuevoId = empty($ids) ? (count($productos) + 1) : ((int) max($ids) + 1);
 
         $productos[] = [
-            'id'        => $nuevoId,
-            'nombre'    => $nombre,
-            'categoria' => $categoria,
-            'precio'    => $precio,
-            'stock'     => $stock
+            'id'          => $nuevoId,
+            'nombre'      => $nombre,
+            'categoria'   => $categoria,
+            'precio'      => round((float) $precio, 2),
+            'existencias' => (int) $existencias,
+            'descripcion' => $descripcion !== '' ? $descripcion : 'Sin descripción disponible.',
         ];
 
         file_put_contents($archivo, json_encode($productos, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+
         $mensaje = 'Producto agregado correctamente.';
         $tipoMensaje = 'exito';
+
+        // Limpiar campos tras guardar con éxito
+        $nombre = '';
+        $categoria = '';
+        $precioInput = '';
+        $existenciasInput = '';
+        $descripcion = '';
     } else {
-        $mensaje = 'Completa todos los campos con datos válidos (precio mayor a 0 y stock mayor o igual a 0).';
+        $mensaje = 'Completa todos los campos obligatorios con datos válidos (precio mayor a 0 y existencias mayores o iguales a 0).';
         $tipoMensaje = 'error';
     }
 }
@@ -51,8 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <h1>Tienda Tec</h1>
         <nav>
             <a href="index.php">Inicio</a>
-            <a href="productos.php">Catálogo</a>
-            <a href="agregar-producto.php" aria-current="page">Agregar producto</a>
+            <a href="productos.php" aria-current="page">Catálogo</a>
             <a href="contacto.php">Contacto</a>
         </nav>
     </header>
@@ -61,28 +91,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <section>
             <h2>Agregar Nuevo Producto</h2>
 
-            <?php if (!empty($mensaje)): ?>
+            <?php if ($mensaje !== ''): ?>
                 <p class="etiqueta" style="<?= $tipoMensaje === 'error' ? 'background:#fde8e8;color:#9b1c1c;' : 'background:#def7ec;color:#03543f;' ?>">
-                    <?= htmlspecialchars($mensaje); ?>
+                    <?= escapar($mensaje); ?>
                 </p>
             <?php endif; ?>
 
             <form action="agregar-producto.php" method="POST">
                 <div>
                     <label for="nombre">Nombre del producto:</label>
-                    <input type="text" id="nombre" name="nombre" placeholder="Ej. Teclado mecánico RGB" required>
+                    <input type="text" id="nombre" name="nombre" value="<?= escapar($nombre); ?>" placeholder="Ej. Teclado mecánico RGB" required>
                 </div>
                 <div>
                     <label for="categoria">Categoría:</label>
-                    <input type="text" id="categoria" name="categoria" placeholder="Ej. Periféricos" required>
+                    <input type="text" id="categoria" name="categoria" value="<?= escapar($categoria); ?>" placeholder="Ej. Periféricos" required>
                 </div>
                 <div>
-                    <label for="precio">Precio:</label>
-                    <input type="number" step="0.01" min="0.01" id="precio" name="precio" placeholder="Ej. 850.00" required>
+                    <label for="precio">Precio (MXN):</label>
+                    <input type="number" step="0.01" min="0.01" id="precio" name="precio" value="<?= escapar($precioInput); ?>" placeholder="Ej. 850.00" required>
                 </div>
                 <div>
-                    <label for="stock">Stock:</label>
-                    <input type="number" min="0" id="stock" name="stock" placeholder="Ej. 15" required>
+                    <label for="existencias">Existencias:</label>
+                    <input type="number" min="0" id="existencias" name="existencias" value="<?= escapar($existenciasInput); ?>" placeholder="Ej. 15" required>
+                </div>
+                <div>
+                    <label for="descripcion">Descripción (opcional):</label>
+                    <textarea id="descripcion" name="descripcion" rows="3" placeholder="Características principales del producto..."><?= escapar($descripcion); ?></textarea>
                 </div>
                 <div style="display: flex; gap: 12px; flex-wrap: wrap;">
                     <button type="submit">Agregar Producto</button>

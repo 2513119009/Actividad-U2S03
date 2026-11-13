@@ -83,7 +83,7 @@ class Producto
             (string) ($datos['nombre'] ?? 'Producto sin nombre'),
             (string) ($datos['categoria'] ?? 'General'),
             (float) ($datos['precio'] ?? 0.0),
-            (int) ($datos['existencias'] ?? 0),
+            (int) ($datos['existencias'] ?? $datos['stock'] ?? 0),
             (string) ($datos['descripcion'] ?? '')
         );
     }
