@@ -1,15 +1,8 @@
-/* =========================================================
-   Conecta TI 2026 · Hoja de estilos base (kit de inicio U2S05)
-   Esta hoja ya trae la "piel" del sitio: colores, tipografía,
-   bordes y espaciados (lo que trabajaste en U2S04).
-   Lo que NO trae es la maquetación: todo se apila en una sola
-   columna. Tu trabajo en esta sesión es la maquetación responsiva.
-   ========================================================= */
-
-/* ===== 1. Variables de marca ===== */
+/* ===== 1. Variables de marca (Tienda Tec) ===== */
 :root {
   --color-primario: #1e3a5f;
-  --color-acento: #2e86ab;
+  --color-acento: #1f6a8a;
+  --color-acento-hover: #164e66;
   --color-texto: #212529;
   --color-texto-suave: #5b6570;
   --color-fondo: #f5f7fa;
@@ -20,7 +13,7 @@
   --radio: 6px;
 }
 
-/* ===== 2. Reset mínimo ===== */
+/* ===== 2. Reset y base ===== */
 *,
 *::before,
 *::after {
@@ -33,6 +26,9 @@ body {
   color: var(--color-texto);
   background-color: var(--color-fondo);
   line-height: 1.5;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 img {
@@ -40,371 +36,188 @@ img {
   display: block;
 }
 
-/* ===== 3. Tipografía general ===== */
-h1 {
-  font-size: 2rem;
+/* ===== 3. Encabezado y navegación ===== */
+header {
+  background-color: var(--color-primario);
+  color: #ffffff;
+  padding: calc(var(--espaciado-base) * 2.5) calc(var(--espaciado-base) * 2);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+}
+
+header h1 {
+  color: #ffffff;
+  font-size: 1.8rem;
   line-height: 1.2;
-  margin: 0 0 calc(var(--espaciado-base) * 2);
+  max-width: 1100px;
+  margin: 0 auto calc(var(--espaciado-base) * 1.5);
 }
 
-h2 {
-  font-size: 1.5rem;
-  color: var(--color-primario);
-  margin: 0 0 var(--espaciado-base);
-}
-
-h3 {
-  font-size: 1.1rem;
-  margin: 0 0 4px;
-}
-
-p {
-  margin: 0 0 var(--espaciado-base);
-}
-
-.contenedor {
-  width: 100%;
-  max-width: 1100px;   /* crece hasta 1100px, pero nunca obliga a desplazar en horizontal */
+nav {
+  max-width: 1100px;
   margin: 0 auto;
-  padding: 0 calc(var(--espaciado-base) * 2);
-}
-
-/* ===== 5. Componentes (piel, sin maquetación) ===== */
-.encabezado {
-  background-color: var(--color-primario);
-  padding: calc(var(--espaciado-base) * 2) 0;
-}
-
-.encabezado-contenido {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: calc(var(--espaciado-base) * 2);
-}
-.portada-interna {
-  display: flex;
-  flex-direction: column;
-  gap: calc(var(--espaciado-base) * 3);
-}
-
-.rejilla-ponentes {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: calc(var(--espaciado-base) * 2);
-}
-
-.menu-principal ul {
-  display: flex;
-  flex-wrap: wrap;
-  gap: calc(var(--espaciado-base) * 2);
-  align-items: center;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.logotipo {
-  color: white;
-  font-size: 1.25rem;
-  font-weight: bold;
-  text-decoration: none;
-}
-
-.logotipo span {
-  color: #8fd3ee;
-}
-
-.menu-principal a {
-  color: white;
-  text-decoration: none;
-  font-weight: 600;
-}
-
-.menu-principal a:hover {
-  text-decoration: underline;
-}
-
-.boton-menu {
-  border: 2px solid white;
-  border-radius: var(--radio);
-  padding: 4px 12px;
-}
-
-/* Botón general */
-.boton {
-  display: inline-block;
-  background-color: var(--color-acento);
-  color: white;
-  text-decoration: none;
-  font-weight: bold;
-  padding: var(--espaciado-base) calc(var(--espaciado-base) * 3);
-  border-radius: var(--radio);
-}
-
-.boton:hover {
-  background-color: var(--color-primario);
-}
-
-/* Portada */
-.portada {
-  background-color: var(--color-superficie);
-  padding: calc(var(--espaciado-base) * 5) 0;
-  border-bottom: 1px solid var(--color-borde);
-}
-
-.etiqueta {
-  display: inline-block;
-  color: var(--color-acento);
-  font-weight: bold;
-  font-size: 0.875rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-.tarjeta-datos {
-  background-color: var(--color-fondo);
-  border: 1px solid var(--color-borde);
-  border-radius: var(--radio);
-  padding: calc(var(--espaciado-base) * 2);
-}
-
-.tarjeta-datos dl {
-  margin: 0;
-}
-
-.dato {
-  padding: var(--espaciado-base) 0;
-  border-bottom: 1px solid var(--color-borde);
-}
-
-.dato:last-child {
-  border-bottom: none;
-}
-
-.dato dt {
-  font-size: 0.8rem;
-  color: var(--color-texto-suave);
-  text-transform: uppercase;
-}
-
-.dato dd {
-  margin: 0;
-  font-weight: 600;
-}
-
-/* Secciones */
-.seccion {
-  padding: calc(var(--espaciado-base) * 5) 0;
-}
-
-.seccion-alterna {
-  background-color: #e9eef3;
-}
-
-.seccion-intro {
-  color: var(--color-texto-suave);
-  margin-bottom: calc(var(--espaciado-base) * 3);
-}
-
-/* Tarjeta de ponente */
-.tarjeta-ponente {
-  background-color: var(--color-superficie);
-  border: 1px solid var(--color-borde);
-  border-radius: var(--radio);
-  padding: calc(var(--espaciado-base) * 2);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-}
-
-.avatar {
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  background-color: var(--color-primario);
-  color: white;
-  font-weight: bold;
-  display: grid;
-  place-items: center;
-  margin-bottom: var(--espaciado-base);
-}
-
-.tarjeta-ponente-cargo {
-  font-size: 0.875rem;
-  color: var(--color-texto-suave);
-}
-
-.tarjeta-ponente-tema {
-  font-style: italic;
-  margin: 0;
-}
-
-/* Agenda */
-.agenda-programa {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.bloque-horario {
-  background-color: var(--color-superficie);
-  border-left: 4px solid var(--color-acento);
-  border-radius: var(--radio);
-  padding: calc(var(--espaciado-base) * 2);
-  margin-bottom: var(--espaciado-base);
-}
-
-.bloque-hora {
-  font-weight: bold;
-  font-size: 1.1rem;
-  color: var(--color-primario);
-}
-
-.bloque-detalle p {
-  color: var(--color-texto-suave);
-  margin: 0;
-}
-
-.sala {
-  display: inline-block;
-  font-size: 0.75rem;
-  background-color: var(--color-fondo);
-  color: var(--color-acento);
-  padding: 2px 8px;
-  border-radius: 12px;
-  margin-top: 4px;
-}
-
-.agenda-info {
-  background-color: var(--color-primario);
-  color: white;
-  border-radius: var(--radio);
-  padding: calc(var(--espaciado-base) * 2);
-}
-
-/* Patrocinadores */
-.lista-patrocinadores {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.logo-patrocinador {
-  background-color: var(--color-superficie);
-  border: 1px dashed var(--color-borde);
-  border-radius: var(--radio);
-  padding: calc(var(--espaciado-base) * 2);
-  text-align: center;
-  font-weight: bold;
-  color: var(--color-texto-suave);
-}
-
-/* Registro */
-.llamado-registro {
-  text-align: center;
-}
-
-/* Pie de página */
-.pie {
-  background-color: var(--color-texto);
-  color: #cfd6dd;
-  padding: calc(var(--espaciado-base) * 4) 0;
-  font-size: 0.9rem;
-}
-
-.pie h3 {
-  color: white;
-}
-
-/* ===== 6. Maquetación responsiva =====
-   Aquí empieza tu trabajo. Escribe primero las reglas
-   para celular (sin media query) y después agrega
-   @media (min-width: 768px) y @media (min-width: 1024px).
-   Mantén este bloque al final del archivo. */
-
-/* ---------- Base móvil (sin media query) ---------- */
-.agenda {
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-areas:
-    "info"
-    "programa";
-  gap: calc(var(--espaciado-base) * 3);
-}
-
-.agenda-programa {
-  grid-area: programa;
-  min-width: 0;
-}
-
-.agenda-info {
-  grid-area: info;
-  min-width: 0;
-}
-
-.bloque-horario {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.lista-patrocinadores {
   display: flex;
   flex-wrap: wrap;
   gap: calc(var(--espaciado-base) * 1.5);
 }
 
-.lista-patrocinadores > * {
-  flex: 1 1 140px;
+nav a {
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: var(--radio);
+  background-color: rgba(255, 255, 255, 0.14);
+  transition: background-color 0.2s ease;
 }
 
-.pie-columnas {
+nav a:hover,
+nav a[aria-current="page"] {
+  background-color: var(--color-acento);
+}
+
+/* ===== 4. Contenedor, tipografía y tarjetas ===== */
+main,
+.contenedor {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: calc(var(--espaciado-base) * 3) calc(var(--espaciado-base) * 2);
+  flex: 1;
+}
+
+h2 {
+  font-size: 1.5rem;
+  color: var(--color-primario);
+  margin: 0 0 calc(var(--espaciado-base) * 2);
+}
+
+h3 {
+  font-size: 1.15rem;
+  color: var(--color-texto);
+  margin: 0 0 var(--espaciado-base);
+}
+
+p {
+  margin: 0 0 calc(var(--espaciado-base) * 1.5);
+}
+
+.rejilla-productos {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: calc(var(--espaciado-base) * 3);
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: calc(var(--espaciado-base) * 2.5);
 }
 
-/* ---------- Tableta: 768px en adelante ---------- */
+section,
+.tarjeta {
+  background-color: var(--color-superficie);
+  border: 1px solid var(--color-borde);
+  border-left: 4px solid var(--color-acento);
+  border-radius: var(--radio);
+  padding: calc(var(--espaciado-base) * 2.5);
+  margin-bottom: calc(var(--espaciado-base) * 2.5);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
+}
+
+.rejilla-productos .tarjeta {
+  margin-bottom: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* ===== 5. Etiquetas y botones ===== */
+.etiqueta {
+  display: inline-block;
+  width: fit-content;
+  background-color: #e3f0f5;
+  color: var(--color-acento);
+  font-weight: bold;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 4px 10px;
+  border-radius: 12px;
+  margin-bottom: var(--espaciado-base);
+}
+
+.boton,
+button,
+input[type="submit"] {
+  display: inline-block;
+  width: fit-content;
+  background-color: var(--color-acento);
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 0.95rem;
+  padding: calc(var(--espaciado-base) * 1.25) calc(var(--espaciado-base) * 2.5);
+  border: none;
+  border-radius: var(--radio);
+  cursor: pointer;
+}
+
+.boton:hover,
+button:hover,
+input[type="submit"]:hover {
+  background-color: var(--color-acento-hover);
+}
+
+/* ===== 6. Formularios ===== */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--espaciado-base) * 2);
+  max-width: 560px;
+}
+
+label {
+  display: block;
+  font-weight: 600;
+  color: var(--color-primario);
+  margin-bottom: 4px;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="email"],
+select,
+textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio);
+  font-family: inherit;
+  font-size: 1rem;
+  background-color: #ffffff;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: 2px solid var(--color-acento);
+  border-color: var(--color-acento);
+}
+
+/* ===== 7. Pie de página ===== */
+footer {
+  background-color: var(--color-primario);
+  color: #cfd6dd;
+  text-align: center;
+  padding: calc(var(--espaciado-base) * 3) calc(var(--espaciado-base) * 2);
+  margin-top: auto;
+  font-size: 0.9rem;
+}
+
+/* ===== 8. Maquetación responsiva ===== */
 @media (min-width: 768px) {
-  h1 {
-    font-size: 2.5rem;
-  }
-
-  .portada-interna {
-    flex-direction: row;
-    align-items: center;
-  }
-
-  .portada-texto {
-    flex: 2;
-  }
-
-  .tarjeta-datos {
-    flex: 1;
-  }
-
-  .bloque-horario {
-    flex-direction: row;
-    align-items: baseline;
-    gap: calc(var(--espaciado-base) * 2);
-  }
-
-  .bloque-hora {
-    flex: 0 0 64px;
-  }
-
-  .pie-columnas {
-    grid-template-columns: repeat(2, 1fr);
+  header h1 {
+    font-size: 2.2rem;
   }
 }
 
-/* ---------- Escritorio: 1024px en adelante ---------- */
 @media (min-width: 1024px) {
-  .agenda {
-    grid-template-columns: 2fr 1fr;
-    grid-template-areas: "programa info";
-  }
-
-  .pie-columnas {
-    grid-template-columns: repeat(4, 1fr);
+  main,
+  .contenedor {
+    padding: calc(var(--espaciado-base) * 4) calc(var(--espaciado-base) * 2);
   }
 }
