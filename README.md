@@ -1,18 +1,34 @@
-# Tienda Tec
+# proyecto-DOMINIO
 
-Aplicación web básica en PHP para la gestión y consulta de productos almacenados en formato JSON.
+Catálogo de {{qué catalogas}} con {{qué transacción}}. Proyecto de la asignatura Aplicaciones Web (E-APW-2), grupo 401.
 
-## Estructura del proyecto
+## Vista previa
 
-- `datos/datos.json`: Almacenamiento de productos.
-- `public/index.php`: Formulario para registrar nuevos productos.
-- `public/productos.php`: Catálogo general de productos.
-- `public/producto-detalle.php`: Vista individual de cada producto.
-- `public/contacto.php`: Formulario de contacto.
+https://TU-USUARIO.github.io/proyecto-DOMINIO/public/
 
-## Ejecución local
+## Dominio y entidades
 
-Desde la carpeta raíz del proyecto, ejecuta:
+| Entidad del curso | Equivalente en mi proyecto |
+|---|---|
+| Categoria | {{...}} |
+| Producto | {{...}} |
+| Cliente / Usuario | {{...}} |
+| Pedido + DetallePedido | {{...}} |
 
-```bash
-php -S localhost:8000 -t public
+## Estructura
+
+    proyecto-DOMINIO/
+    ├── datos/datos.json
+    ├── public/
+    ├── docs/checklist-ux.md
+    └── README.md
+
+## Estado
+
+Unidad II (front end) completa. Siguiente: Unidad III (back end en PHP).
+
+## Bitácora U2S06
+
+1. {{respuesta a la pregunta 1}}
+2. {{respuesta a la pregunta 2}}
+3. {{respuesta a la pregunta 3}}
