@@ -11,43 +11,49 @@ if (file_exists($archivo)) {
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Tienda Tec - Productos</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo - Tienda Tec</title>
     <link rel="stylesheet" href="assets/css/estilos.css">
 </head>
 <body>
 
     <header>
-        <h1>Productos</h1>
+        <h1>Tienda Tec</h1>
         <nav>
             <a href="index.php">Inicio</a>
-            <a href="productos.php">Catálogo</a>
+            <a href="productos.php" aria-current="page">Catálogo</a>
+            <a href="agregar-producto.php">Agregar producto</a>
             <a href="contacto.php">Contacto</a>
         </nav>
     </header>
 
-    <main>
-        <h2>Catálogo</h2>
-        <p><a href="agregar-producto.php" class="btn-agregar">Agregar producto +</a></p>
+    <main class="contenedor">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 20px;">
+            <h2 style="margin: 0;">Catálogo de Productos</h2>
+            <a href="agregar-producto.php" class="boton">+ Agregar producto</a>
+        </div>
 
         <?php if (!empty($productos)): ?>
-            <div class="catalogo-grid">
+            <div class="rejilla-productos">
                 <?php foreach ($productos as $indice => $producto): ?>
-                    <div class="producto-item">
-                        <div class="producto-imagen">200 &times; 150</div>
-                        <div class="producto-info">
-                            <h3><?php echo htmlspecialchars($producto['nombre']); ?></h3>
-                            <span class="categoria-badge">Categoría: <?php echo htmlspecialchars($producto['categoria']); ?></span>
-                            <p class="producto-descripcion">
-                                <?php echo htmlspecialchars($producto['descripcion'] ?? 'Stock disponible: ' . $producto['stock'] . ' unidades'); ?>
-                            </p>
-                            <p class="producto-precio">Precio: $<?php echo number_format($producto['precio'], 2); ?></p>
-                            <a href="producto-detalle.php?id=<?php echo $indice; ?>" class="btn-detalle">Ver detalle</a>
-                        </div>
-                    </div>
+                    <?php $idProducto = $producto['id'] ?? ($indice + 1); ?>
+                    <article class="tarjeta">
+                        <span class="etiqueta"><?= htmlspecialchars($producto['categoria'] ?? 'General'); ?></span>
+                        <h3><?= htmlspecialchars($producto['nombre'] ?? 'Producto'); ?></h3>
+                        <p>
+                            <?= htmlspecialchars($producto['descripcion'] ?? 'Stock disponible: ' . (int) ($producto['stock'] ?? 0) . ' unidades'); ?>
+                        </p>
+                        <p><strong>Precio:</strong> $<?= number_format((float) ($producto['precio'] ?? 0), 2); ?> MXN</p>
+                        <p><strong>Disponibles:</strong> <?= (int) ($producto['stock'] ?? 0); ?> unidades</p>
+                        <a href="producto-detalle.php?id=<?= urlencode((string) $idProducto); ?>" class="boton">Ver detalle</a>
+                    </article>
                 <?php endforeach; ?>
             </div>
         <?php else: ?>
-            <p>No hay productos registrados.</p>
+            <section>
+                <p>No hay productos registrados todavía.</p>
+                <a href="agregar-producto.php" class="boton">Agregar el primer producto</a>
+            </section>
         <?php endif; ?>
     </main>
 

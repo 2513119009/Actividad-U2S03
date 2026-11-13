@@ -33,29 +33,46 @@ $producto = Producto::desdeArreglo([
     <link rel="stylesheet" href="assets/css/estilos.css">
 </head>
 <body>
+
+    <header>
+        <h1>Tienda Tec</h1>
+        <nav>
+            <a href="index.php">Inicio</a>
+            <a href="productos.php">Catálogo</a>
+            <a href="agregar-producto.php">Agregar producto</a>
+            <a href="contacto.php">Contacto</a>
+        </nav>
+    </header>
+
     <main class="contenedor">
-        <h1>Prueba de Modelos PHP (U3S07)</h1>
+        <h2>Prueba de Modelos PHP (U3S07)</h2>
 
         <section>
-            <h2>Categoría: <?= htmlspecialchars($categoria->obtenerNombre()) ?></h2>
+            <span class="etiqueta"><?= $categoria->etiquetaEstado() ?></span>
+            <h3>Categoría: <?= htmlspecialchars($categoria->obtenerNombre()) ?></h3>
             <p><strong>ID:</strong> <?= $categoria->obtenerId() ?></p>
             <p><strong>Slug:</strong> <?= htmlspecialchars($categoria->obtenerSlug()) ?></p>
             <p><strong>Descripción:</strong> <?= htmlspecialchars($categoria->obtenerDescripcion()) ?></p>
-            <p><strong>Estado:</strong> <?= $categoria->etiquetaEstado() ?></p>
             <p><strong>URL catálogo:</strong> <?= htmlspecialchars($categoria->urlCatalogo()) ?></p>
         </section>
 
-        <hr>
-
         <section>
-            <h2>Producto: <?= htmlspecialchars($producto->obtenerNombre()) ?></h2>
+            <span class="etiqueta"><?= $producto->estaDisponible() ? 'Disponible' : 'Agotado' ?></span>
+            <h3>Producto: <?= htmlspecialchars($producto->obtenerNombre()) ?></h3>
             <p><strong>ID:</strong> <?= $producto->obtenerId() ?></p>
             <p><strong>Categoría:</strong> <?= htmlspecialchars($producto->obtenerCategoria()) ?></p>
             <p><strong>Precio:</strong> <?= $producto->precioFormateado() ?></p>
-            <p><strong>Existencias:</strong> <?= $producto->obtenerExistencias() ?> (<?= $producto->estaDisponible() ? 'Disponible' : 'Agotado' ?>)</p>
+            <p><strong>Existencias:</strong> <?= $producto->obtenerExistencias() ?> unidades</p>
             <p><strong>Descripción:</strong> <?= htmlspecialchars($producto->obtenerDescripcion()) ?></p>
             <p><strong>Subtotal por 3 piezas:</strong> $<?= number_format($producto->calcularSubtotal(3), 2) ?> MXN</p>
         </section>
+
+        <a href="index.php" class="boton">Volver al inicio</a>
     </main>
+
+    <footer>
+        <p>&copy; 2026 Tienda Tec. Todos los derechos reservados.</p>
+    </footer>
+
 </body>
 </html>

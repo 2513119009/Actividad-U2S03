@@ -8,39 +8,59 @@ if (file_exists($archivo)) {
 }
 
 $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
-$producto = ($id !== false && $id !== null && isset($productos[$id])) ? $productos[$id] : null;
+$producto = null;
+
+if ($id !== false && $id !== null) {
+    foreach ($productos as $index => $item) {
+        $itemId = $item['id'] ?? ($index + 1);
+        if ((int) $itemId === $id) {
+            $producto = $item;
+            break;
+        }
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Detalle del Producto - Tienda Tec</title>
     <link rel="stylesheet" href="assets/css/estilos.css">
 </head>
 <body>
 
     <header>
-        <h1>Detalle del Producto</h1>
+        <h1>Tienda Tec</h1>
         <nav>
             <a href="index.php">Inicio</a>
-            <a href="productos.php">Catálogo</a>
+            <a href="productos.php" aria-current="page">Catálogo</a>
+            <a href="agregar-producto.php">Agregar producto</a>
             <a href="contacto.php">Contacto</a>
         </nav>
     </header>
 
-    <main>
-        <?php if ($producto): ?>
-            <div class="producto-item">
-                <h2><?php echo htmlspecialchars($producto['nombre']); ?></h2>
-                <p><strong>Categoría:</strong> <?php echo htmlspecialchars($producto['categoria']); ?></p>
-                <p><strong>Precio:</strong> $<?php echo number_format($producto['precio'], 2); ?></p>
-                <p><strong>Stock disponible:</strong> <?php echo htmlspecialchars($producto['stock']); ?> unidades</p>
-            </div>
-        <?php else: ?>
-            <p>El producto solicitado no existe.</p>
-        <?php endif; ?>
+    <main class="contenedor">
+        <p><a href="productos.php" class="boton" style="background-color: #5b6570;">&larr; Volver al catálogo</a></p>
 
-        <p><a href="productos.php">Volver al catálogo</a></p>
+        <?php if ($producto): ?>
+            <section>
+                <span class="etiqueta"><?= htmlspecialchars($producto['categoria'] ?? 'General'); ?></span>
+                <h2><?= htmlspecialchars($producto['nombre'] ?? 'Producto'); ?></h2>
+                <p><strong>Precio:</strong> $<?= number_format((float) ($producto['precio'] ?? 0), 2); ?> MXN</p>
+                <p><strong>Stock disponible:</strong> <?= (int) ($producto['stock'] ?? 0); ?> unidades</p>
+                <?php if (!empty($producto['descripcion'])): ?>
+                    <p><strong>Descripción:</strong> <?= htmlspecialchars($producto['descripcion']); ?></p>
+                <?php endif; ?>
+            </section>
+        <?php else: ?>
+            <section>
+                <p class="etiqueta" style="background:#fde8e8;color:#9b1c1c;">Producto no encontrado</p>
+                <h2>El producto solicitado no existe</h2>
+                <p>Es posible que el enlace esté incompleto o que el artículo haya sido retirado del catálogo.</p>
+                <a href="productos.php" class="boton">Ir al catálogo completo</a>
+            </section>
+        <?php endif; ?>
     </main>
 
     <footer>
